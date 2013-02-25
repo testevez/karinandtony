@@ -1,0 +1,229 @@
+<?php
+/**
+ * @file
+ * Code for the WWE Photo feature.
+ */
+
+include_once 'wwe_photo.features.inc';
+
+function wwe_photo_form_file_entity_add_upload_multiple_alter(&$form, &$form_state) {
+
+  // @TODO: This will need to be updated for whatever out final version is
+  // Add our autocreate gallery option
+  $form['actions']['autocreate'] = array(
+    '#type' => 'submit',
+    '#value' => 'Autocreate Gallery from Uploaded Files',
+    '#name' => 'autocreate',
+  );
+
+  $form['#submit'][] = 'wwe_photo_form_file_entity_add_upload_multiple_submit';
+}
+
+function wwe_photo_form_file_entity_add_upload_multiple_submit($form, &$form_state) {
+
+  if ($form_state['triggering_element']['#name'] === 'autocreate') {
+    $files = array();
+    foreach ($form_state['files'] as $file) {
+      if ($file->type === 'image') {
+        $files[] = $file;
+      }
+    }
+    $nid = wwe_photo_create_gallery_node($files);
+    array_pop($form_state['redirect']);
+    $form_state['redirect'][] = array('query' => array('destination' => 'node/' . $nid . '/edit'));
+  }
+}
+
+function wwe_photo_create_gallery_node($files) {
+
+  $node = new stdClass();
+  $node->type = 'photo_gallery';
+  node_object_prepare($node);
+
+  $node->title    = 'Generated Gallery';
+  $node->language = LANGUAGE_NONE;
+
+  foreach ($files as $file) {
+    $node->field_photos[$node->language][] = array('fid' => $file->fid);
+  }
+
+  node_save($node);
+
+  return $node->nid;
+}
+
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function wwe_photo_field_formatter_info() {
+  return array(
+    'wwe_video_polaroid' => array(
+      'label' => t('WWE Polaroid Formatter'),
+      'field types' => array('media', 'image'),
+      'settings' => array(
+
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ *
+ * Provides display settings form within the manage display page of
+ * an image field with formatter flexslider.
+ */
+function wwe_photo_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $form = array();
+
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ *
+ * Displays the summary of the set options of a flexslider formatted image field
+ */
+function wwe_photo_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $summary = array();
+
+  return implode('<br />', $summary);
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ *
+ * Prepares a renderable array of images and adds the neccessary JS and CSS
+ */
+function wwe_photo_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+
+  $element = array();
+
+  if ($field['type'] == 'media') {
+    $image_items = array();
+    foreach ($items as $item) {
+      if ($item['file']->type == 'image') {
+        $file = $item['file'];
+       // $file += array('alt' => '', 'title' => '');
+        $image_items[] = drupal_realpath($file->uri);
+      }
+    }
+    $items = $image_items;
+  }
+
+  if (count($items)) {
+
+    // So we will store this file locally unmanaged
+    // based on a hash of the first three file names
+    $hash = md5(implode("", $items));
+    $basedir = "public://polaroid";
+    $core_file = $basedir . '/' . $hash . '.jpg';
+
+    // If the file doesn't exist, create it
+    if (!file_exists(drupal_realpath($core_file))) {
+      $vars = array(
+        'width' => 800,
+        'bg_color' => 'white',
+        'items' => $items,
+      );
+
+      $img = wwe_photo_generate_polaroids($vars);
+
+      if (file_prepare_directory($basedir, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
+        $core_file = file_unmanaged_save_data($img, $core_file, FILE_EXISTS_REPLACE);
+      }
+    }
+
+    $element = array(
+      '#theme' => 'image_style',
+      '#style_name' => 'prominent_image_medium',
+      '#path' => $core_file,
+      '#alt' => $entity->title,
+      '#attributes' => array('class' => array('polaroid-image')),
+    );
+
+  }
+
+  return $element;
+}
+
+/**
+ * This is where the magic happens
+ */
+function wwe_photo_generate_polaroids($variables) {
+
+
+  $width = $variables['width'];
+  // Canvas should maintain 16:9 ratio
+  $height = (int) ($width * 9 / 16);
+  $bg_color = $variables['bg_color'];
+
+
+  $items = $variables['items'];
+
+  /* The object used as a canvas */
+  $canvas = new Imagick();
+  $canvas->newImage($width, $height, $bg_color);
+  $canvas->adaptiveResizeImage($width, $height);
+  $canvas->setImageFormat("jpg");
+
+  $bg = new ImagickDraw();
+
+  /* Loop trough images, overlay on canvas and remove the image */
+  $counter = 0;
+
+  /** @var $image Imagick */
+  foreach (array_reverse($items) as $item) {
+
+    // Load image
+    $image = new Imagick($item);
+
+    $angle = 0;
+
+    // Top left corner of first image
+    // X Coord should be
+    $x = (int) (($width - ($width * 0.65)) / 2);
+    $y = 40;
+
+    switch ($counter) {
+      case 2:
+        $image->thumbnailImage(($width * 0.6), 0);
+        $image->setImageBackgroundColor(new ImagickPixel("black"));
+        $angle = 0;
+        break;
+      case 1:
+        $image->thumbnailImage(($width * 0.45), 0);
+        $image->setImageBackgroundColor(new ImagickPixel("black"));
+        $x = 20;
+        $y = 60;
+        break;
+      case 1:
+        $image->thumbnailImage(($width * 0.45), 0);
+        $image->setImageBackgroundColor(new ImagickPixel("black"));
+        $y = 60;
+        $x = $width - ($width * 0.45) - 50;
+        break;
+    }
+
+    /* Create the polaroid */
+    $image->polaroidImage($bg, $angle);
+
+    /* Composite to a random location */
+    $canvas->compositeImage($image, Imagick::COMPOSITE_OVER, $x, $y);
+
+    /* Free some resources */
+    $image->removeImage();
+
+    $counter ++;
+  }
+
+  return (string) $canvas;
+}

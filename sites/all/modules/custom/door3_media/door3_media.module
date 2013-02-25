@@ -1,0 +1,8 @@
+<?php
+/**
+ * @file
+ */
+include_once 'door3_media.action.inc';
+
+// TODO: Add check so that these actions are not available if they don not make sense
+
