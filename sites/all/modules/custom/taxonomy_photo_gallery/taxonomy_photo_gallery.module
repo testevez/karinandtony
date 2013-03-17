@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Taxonomy Photo Gallery feature.
+ */
+
+include_once 'taxonomy_photo_gallery.features.inc';
