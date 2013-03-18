@@ -4,4 +4,84 @@
  * Code for the Taxonomy Photo Gallery feature.
  */
 
+include_once 'taxonomy_photo_gallery.actions.inc';
 include_once 'taxonomy_photo_gallery.features.inc';
+
+/**
+ * Stub function to return the vid of the Photo Group vocabulary
+ * @return Int
+ */
+function _taxonomy_photo_gallery_group_vid() {
+  //TODO: make this not hardcoded
+  return 2;
+  
+}
+/**
+ * Helper function to retrieve all useful information from our Photo group taxonomy.
+ *
+ * @param bool $get_children
+ * @param bool $reset
+ * @return array
+ *   An array of pillar term data keyed by pillar term id
+ */
+function _taxonomy_photo_gallery_group_info($reset = FALSE) {
+
+  //$cache = cache_get('taxonomy_photo_gallery:photo_group_info');
+
+  //if (empty($cache->data) || $reset) {
+    $vid = _taxonomy_photo_gallery_group_vid();
+    $photo_group_tree = taxonomy_get_tree($vid);
+    $photo_groups = array();
+    foreach ($photo_group_tree as $photo_group) {
+      $tid = $photo_group->tid;
+      $photo_groups[$tid] = taxonomy_term_load($tid);
+    }
+
+    cache_set('taxonomy_photo_gallery:photo_group_info', $photo_groups);
+    $cache->data = $photo_groups;
+  //}
+
+  return $cache->data;
+}
+
+/**
+ * Helper function to return all the photo galleries
+ */
+function _taxonomy_photo_galleries_list($include_unlisted = TRUE) {
+  $terms = _taxonomy_photo_gallery_group_info();
+  $options = array();
+  foreach ($terms as $tid => $term) {
+    $options[$tid] = $term->name;
+  }
+  return $options;
+}
+
+
+
+
+/**
+ * Implements hook_menu().
+ */
+function taxonomy_photo_gallery_menu() {
+  //TODO: make path and title configurable
+  $items['photos'] = array(
+    'title' => 'Photo Galleries',
+    'page callback' => 'taxonomy_photo_galleries_gallery_page',
+    'access arguments' => array('access content'),
+    'menu_name' => 'main-menu',
+    'file' => 'taxonomy_photo_gallery.page.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission
+ */
+function  taxonomy_photo_gallery_permission() {
+   return array(
+    'administer taxonomy_photo_gallery' => array(
+      'title' => t('Aaminister Taxonomy Photo Gallery'), 
+      //'description' => t('Perform administration tasks for my module.'),
+    ),
+  );
+}
