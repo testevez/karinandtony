@@ -10,3 +10,5 @@ sites/*/private
 .project
 .settings/
 
+# Ignore Mac Stuff
+.DS_Store
