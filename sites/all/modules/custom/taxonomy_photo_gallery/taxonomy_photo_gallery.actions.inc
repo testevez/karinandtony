@@ -27,11 +27,11 @@ function taxonomy_photo_gallery_action_info() {
  *
  * Set the pillar of a node. 
  * 
- * @param $node
- *   A node object provided by the associated trigger.
+ * @param file
+ *   A file object provided by the associated trigger.
  * @param $context
  *   Array with the following elements:
- *   - 'pillar': the pillar to assign
+ *   - 'Photo Group': the Photo Group to assign
  *     
  */
 function taxonomy_photo_gallery_assign_action($file, $context) {
@@ -39,9 +39,19 @@ function taxonomy_photo_gallery_assign_action($file, $context) {
   foreach($context['photo_group'] as $photo_group_tid) {
     if ($photo_group_tid) {
       $term = taxonomy_term_load($photo_group_tid);
-      $file->field_photo_group['und'][]['tid'] = $term->tid;
-      file_save($file);
-      drupal_set_message(t('Set image %title to to have a Photo Group of %termname.', array('%title' => $file->title, '%termname' => $term->name)));
+      foreach ($file->field_photo_group['und'] as $i => $array) {
+        $tid = current($array);
+        $tids[$tid] = $tid;
+        
+      }
+      if (!in_array($term->tid, $tids)) {
+        $file->field_photo_group['und'][]['tid'] = $term->tid;
+        file_save($file);
+        drupal_set_message(t('Set image %title to have a Photo Group of %termname.', array('%title' => $file->title, '%termname' => $term->name)));
+      }
+      else {
+        drupal_set_message(t('Image %title already had a Photo Group of %termname.', array('%title' => $file->title, '%termname' => $term->name)));
+      }
     }
   }
 }

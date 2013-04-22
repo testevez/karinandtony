@@ -6,15 +6,14 @@
 
 include_once 'taxonomy_photo_gallery.actions.inc';
 include_once 'taxonomy_photo_gallery.features.inc';
+include_once 'taxonomy_photo_gallery.theme.inc';
 
 /**
  * Stub function to return the vid of the Photo Group vocabulary
  * @return Int
  */
 function _taxonomy_photo_gallery_group_vid() {
-  //TODO: make this not hardcoded
-  return 2;
-  
+  return _trinity_get_vid('photo_group');
 }
 /**
  * Helper function to retrieve all useful information from our Photo group taxonomy.
@@ -64,23 +63,44 @@ function _taxonomy_photo_galleries_list($include_unlisted = TRUE) {
  */
 function taxonomy_photo_gallery_menu() {
   //TODO: make path and title configurable
-  $items['photos'] = array(
-    'title' => 'Photo Galleries',
-    'page callback' => 'taxonomy_photo_galleries_gallery_page',
+  $enabled = variable_get('taxonomy_photo_gallery_page', FALSE);
+  $path = variable_get('taxonomy_photo_gallery_path', 'photos');
+  if ($enabled) {
+    $items[$path] = array(
+      'title' => 'Photo Galleries',
+      'page callback' => 'taxonomy_photo_galleries_gallery_page',
+      'access arguments' => array('access content'),
+      'menu_name' => 'main-menu',
+      'file' => 'taxonomy_photo_gallery.page.inc',
+    );
+  }
+  $items[$path .'/%'] = array(
+    'title' => 'Photo Gallery',
+    'page callback' => 'taxonomy_photo_gallery_page',
     'access arguments' => array('access content'),
     'menu_name' => 'main-menu',
     'file' => 'taxonomy_photo_gallery.page.inc',
   );
+  $items['admin/trinity/photo-galleries/settings'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('taxonomy_photo_gallery_admin_form'),
+    'access arguments' => array('administer taxonomy_photo_gallery'),
+    'menu_name' => 'management',
+    'file' => 'taxonomy_photo_gallery.admin.inc',
+  );
   return $items;
 }
+
+
 
 /**
  * Implements hook_permission
  */
-function  taxonomy_photo_gallery_permission() {
+function taxonomy_photo_gallery_permission() {
    return array(
     'administer taxonomy_photo_gallery' => array(
-      'title' => t('Aaminister Taxonomy Photo Gallery'), 
+      'title' => t('Administer Taxonomy Photo Gallery'), 
       //'description' => t('Perform administration tasks for my module.'),
     ),
   );
