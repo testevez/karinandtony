@@ -5,19 +5,55 @@
  */
 
 include_once 'karintony.features.inc';
+include_once 'karintony.theme.inc';
 
+
+
+/**
+ * Implements hook_menu().
+ */
+function karintony_menu() {
+
+  $items['file/%file/kt-detail'] = array(
+    'title callback' => 'entity_label',
+    'title arguments' => array('file', 1),
+    // The page callback also invokes drupal_set_title() in case
+    // the menu router's title is overridden by a menu link.
+    'page callback' => 'karin_tony_file_entity_view_page',
+    'page arguments' => array(1, 'kt-detail'),
+    'access callback' => 'file_entity_access',
+    'access arguments' => array('view', 1),
+    'file' => 'karintony.pages.inc',
+  );
+  
+  return $items;
+}
 
 
 /**
 * Implements hook_entity_info_alter().
 */
 function karintony_entity_info_alter(&$entity_info) {
-  $entity_info['file']['view modes']['240_width'] = array(
-    'label' => t('240 Width'),
+  $entity_info['file']['view modes']['kt_detail'] = array(
+    'label' => t('KT Detail'),
     'custom settings' => TRUE,
   );
   $entity_info['file']['view modes']['masonry'] = array(
     'label' => t('Masonry'),
     'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function karintony_theme() {
+  return array(
+    'kt_detail' => array(
+      'variables' => array(
+        'file' => NULL,
+      ),
+    ),
   );
 }

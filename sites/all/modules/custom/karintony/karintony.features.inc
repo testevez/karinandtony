@@ -12,6 +12,50 @@ function karintony_views_api() {
 }
 
 /**
+ * Implements hook_flag_default_flags().
+ */
+function karintony_flag_default_flags() {
+  $flags = array();
+  // Exported flag: "Favorite Photographs".
+  $flags['favorite_photos'] = array(
+    'content_type' => 'file',
+    'title' => 'Favorite Photographs',
+    'global' => '0',
+    'types' => array(
+      0 => 'image',
+    ),
+    'flag_short' => 'Like',
+    'flag_long' => 'Like this photograph',
+    'flag_message' => 'This photograph has been added to your Favorite Photographs list',
+    'unflag_short' => 'Unlike',
+    'unflag_long' => 'Unlike this photograph',
+    'unflag_message' => 'This photograph has been removed from your Favorite Photographs list',
+    'unflag_denied_text' => 'This photograph is already in your Favorite Photogrpahs list',
+    'link_type' => 'toggle',
+    'roles' => array(
+      'flag' => array(
+        0 => '2',
+      ),
+      'unflag' => array(
+        0 => '2',
+      ),
+    ),
+    'weight' => 0,
+    'show_on_file_page' => TRUE,
+    'show_on_entity' => 1,
+    'show_on_form' => 0,
+    'access_author' => '',
+    'api_version' => 2,
+    'module' => 'karintony',
+    'locked' => array(
+      0 => 'name',
+    ),
+  );
+  return $flags;
+
+}
+
+/**
  * Implements hook_image_default_styles().
  */
 function karintony_image_default_styles() {
