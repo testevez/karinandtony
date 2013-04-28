@@ -1,0 +1,23 @@
+<?php
+/**
+ * @file
+ * Code for the Karin and Tony feature.
+ */
+
+include_once 'karintony.features.inc';
+
+
+
+/**
+* Implements hook_entity_info_alter().
+*/
+function karintony_entity_info_alter(&$entity_info) {
+  $entity_info['file']['view modes']['240_width'] = array(
+    'label' => t('240 Width'),
+    'custom settings' => TRUE,
+  );
+  $entity_info['file']['view modes']['masonry'] = array(
+    'label' => t('Masonry'),
+    'custom settings' => TRUE,
+  );
+}

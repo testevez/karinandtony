@@ -1,0 +1,14 @@
+name = Karin and Tony
+description = Views and Modules to support htp://karinandtony.com
+core = 7.x
+package = Karin and Tony
+version = 7.x-1.0
+project = karintony
+dependencies[] = image
+dependencies[] = views
+dependencies[] = views_fluidgrid
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[image][] = 240_width
+features[views_view][] = karin_and_tony_frontpage
+features_exclude[dependencies][ctools] = ctools

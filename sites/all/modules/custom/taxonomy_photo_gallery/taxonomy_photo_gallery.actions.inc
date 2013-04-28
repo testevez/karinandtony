@@ -20,7 +20,27 @@ function taxonomy_photo_gallery_action_info() {
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
+    'taxonomy_photo_gallery_styles_action' => array(
+      'type' => 'file',
+      'label' => t('Create every possible imagestyle for this image'),
+      'configurable' => FALSE,
+      'triggers' => array('any'),
+    ),
   );
+}
+/**
+ * Action function to create imagestyles for files
+ */
+function taxonomy_photo_gallery_styles_action($file, $context) {
+
+  $all_styles = image_styles();
+
+  $source = $file->uri;
+  foreach ($all_styles as $style) {
+    $destination = image_style_path($style['name'], $source);
+    image_style_create_derivative($style, $source, $destination);
+  }
+ 
 }
 /**
  * Action function for wwe_admin_node_pillar_action.

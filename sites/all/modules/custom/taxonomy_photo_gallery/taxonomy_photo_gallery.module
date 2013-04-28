@@ -55,7 +55,12 @@ function _taxonomy_photo_galleries_list($include_unlisted = TRUE) {
   return $options;
 }
 
-
+/**
+ * Implements hook_init().
+ */
+function taxonomy_photo_gallery_init() {
+  drupal_add_css(drupal_get_path('module', 'taxonomy_photo_gallery') . '/taxonomy_photo_gallery.css');
+}
 
 
 /**
