@@ -76,7 +76,6 @@ function taxonomy_photo_gallery_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'photos/%';
   $export['photo_gallery'] = $view;
 
@@ -112,6 +111,13 @@ function taxonomy_photo_gallery_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
     'action::taxonomy_photo_gallery_assign_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::taxonomy_photo_gallery_styles_action' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
@@ -239,6 +245,7 @@ function taxonomy_photo_gallery_views_default_views() {
   $handler->display->display_options['filters']['field_photo_group_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_photo_group_tid']['expose']['operator_id'] = 'field_photo_group_tid_op';
   $handler->display->display_options['filters']['field_photo_group_tid']['expose']['label'] = 'Photo group (field_photo_group)';
+  $handler->display->display_options['filters']['field_photo_group_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_photo_group_tid']['expose']['operator'] = 'field_photo_group_tid_op';
   $handler->display->display_options['filters']['field_photo_group_tid']['expose']['identifier'] = 'field_photo_group_tid';
   $handler->display->display_options['filters']['field_photo_group_tid']['expose']['multiple'] = TRUE;
@@ -252,7 +259,6 @@ function taxonomy_photo_gallery_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'admin/custom/photo-gallery-admin';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Photo Gallery Admin';

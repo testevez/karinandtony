@@ -19,6 +19,7 @@ dependencies[] = views_bulk_operations
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
 features[field][] = file-image-field_photo_group
+features[field][] = taxonomy_term-photo_group-field_cover_image
 features[field][] = taxonomy_term-photo_group-field_listed
 features[taxonomy][] = photo_group
 features[views_view][] = photo_gallery
