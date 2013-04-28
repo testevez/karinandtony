@@ -9,11 +9,23 @@ include_once 'taxonomy_photo_gallery.features.inc';
 include_once 'taxonomy_photo_gallery.theme.inc';
 
 /**
+ * Get a vocabulary id by name
+ */
+function _taxonomy_photo_gallery_vid($vocabulary_name) {
+
+  $result = db_query('SELECT tv.vid FROM {taxonomy_vocabulary} tv WHERE tv.machine_name = :name', array(':name' => $vocabulary_name));
+  // Result is returned as a iterable object that returns a stdClass object on each iteration
+  foreach ($result as $record) {
+    return $record->vid;
+  }
+}
+
+/**
  * Stub function to return the vid of the Photo Group vocabulary
  * @return Int
  */
 function _taxonomy_photo_gallery_group_vid() {
-  return _trinity_get_vid('photo_group');
+  return _taxonomy_photo_gallery_vid('photo_group');
 }
 /**
  * Helper function to retrieve all useful information from our Photo group taxonomy.
