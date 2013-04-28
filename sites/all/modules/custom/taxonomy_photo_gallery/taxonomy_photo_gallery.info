@@ -23,7 +23,6 @@ features[field][] = file-image-field_photo_group
 features[field][] = taxonomy_term-photo_group-field_cover_image
 features[field][] = taxonomy_term-photo_group-field_listed
 features[image][] = admin_table_thumbs
-features[image][] = masonry_image_width
 features[taxonomy][] = photo_group
 features[views_view][] = photo_gallery
 features[views_view][] = photo_gallery_admin
