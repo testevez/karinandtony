@@ -56,13 +56,26 @@ function _taxonomy_photo_gallery_group_info($reset = FALSE) {
 }
 
 /**
- * Helper function to return all the photo galleries
+ * Helper function to return all the photo groups
  */
 function _taxonomy_photo_galleries_list($include_unlisted = TRUE) {
   $terms = _taxonomy_photo_gallery_group_info();
   $options = array();
   foreach ($terms as $tid => $term) {
     $options[$tid] = $term->name;
+  }
+  return $options;
+}
+/**
+ * Helper function to return all the photo galleries
+ */
+function _taxonomy_photo_galleries_node_list($include_unlisted = TRUE) {
+  $nodes = views_get_view_result('gallery_nodes');
+  $options = array();
+  foreach ($nodes as $node) {
+    $nid = $node->nid;
+    $title = $node->node_title;
+    $options[$nid] =$title;
   }
   return $options;
 }

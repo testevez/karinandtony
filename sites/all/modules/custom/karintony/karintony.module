@@ -24,7 +24,16 @@ function karintony_menu() {
     'access arguments' => array('view', 1),
     'file' => 'karintony.pages.inc',
   );
-  
+  $items['admin/custom/karin-tony'] = array(
+  	'title' => 'Karin and Tony',
+    'description' => 'Administer Karin and Tony.',
+    'weight' => -8,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+    'menu_name' => 'management'
+  );
   return $items;
 }
 
@@ -41,8 +50,24 @@ function karintony_entity_info_alter(&$entity_info) {
     'label' => t('Masonry'),
     'custom settings' => TRUE,
   );
+  $entity_info['file']['view modes']['tiny_thumb'] = array(
+    'label' => t('Tiny Thumb'),
+    'custom settings' => TRUE,
+  );
+  $entity_info['file']['view modes']['kt_teaser'] = array(
+    'label' => t('Tiny Thumb'),
+    'custom settings' => TRUE,
+  );
 }
 
+
+/**
+ * Implements hook_init().
+ */
+function karintony_init() {
+  drupal_add_css(drupal_get_path('module', 'karintony') .'/karintony.css');
+
+}
 
 /**
  * Implements hook_theme().

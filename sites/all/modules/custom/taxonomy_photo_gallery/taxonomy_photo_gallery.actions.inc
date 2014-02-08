@@ -6,6 +6,13 @@
  */
 function taxonomy_photo_gallery_action_info() {
   return array(
+    'taxonomy_photo_gallery_file2node_action' => array(
+      'type' => 'file',
+      'label' => t('Make a node for this file'),
+      'configurable' => FALSE,
+      //'behavior' => array('changes_property'),
+      'triggers' => array('any'),
+    ),
     'taxonomy_photo_gallery_assign_action' => array(
       'type' => 'file',
       'label' => t('Assign Photo Group'),
@@ -20,6 +27,21 @@ function taxonomy_photo_gallery_action_info() {
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
+
+    'taxonomy_photo_gallery_assign_node' => array(
+      'type' => 'file',
+      'label' => t('Assign Photo Gallery'),
+      'configurable' => TRUE,
+      //'behavior' => array('changes_property'),
+      'triggers' => array('any'),
+    ),
+    'taxonomy_photo_gallery_unassign_node' => array(
+      'type' => 'file',
+      'label' => t('Remove from All Photo Galleries'),
+      'configurable' => FALSE,
+      //'behavior' => array('changes_property'),
+      'triggers' => array('any'),
+    ),
     'taxonomy_photo_gallery_styles_action' => array(
       'type' => 'file',
       'label' => t('Create every possible imagestyle for this image'),
@@ -27,6 +49,24 @@ function taxonomy_photo_gallery_action_info() {
       'triggers' => array('any'),
     ),
   );
+}
+/**
+ * function for taxonomy_photo_gallery_file2node_action()
+ */
+function taxonomy_photo_gallery_file2node_action($file, $context) {
+  // check to see if there's a kt_photo for this node already
+
+  // make a kt_node for this photo
+  $file_info = (array)$file;
+  $field_image['und'][] = $file_info;
+  $node = array(
+    'title' => $file->filename,
+    'field_image' => $field_image,
+    'type' => 'kt_photo',
+    'uid' => $file->uid,
+  );
+  $node = (object)$node;
+  node_save($node);
 }
 /**
  * Action function to create imagestyles for files
@@ -43,9 +83,7 @@ function taxonomy_photo_gallery_styles_action($file, $context) {
  
 }
 /**
- * Action function for wwe_admin_node_pillar_action.
- *
- * Set the pillar of a node. 
+ * Set the Photo Group of a node. 
  * 
  * @param file
  *   A file object provided by the associated trigger.
@@ -76,14 +114,42 @@ function taxonomy_photo_gallery_assign_action($file, $context) {
   }
 }
 /**
- * Generates settings form for wwe_admin_node_pillar_action.
- *
+ * Set the Photo Gallery of a node. 
+ * 
+ * @param file
+ *   A file object provided by the associated trigger.
  * @param $context
- *   An array of options of this action (in case it is being edited)
- *
- * @return array $form
- *
- * @see action_example_action_info()
+ *   Array with the following elements:
+ *   - 'Photo Group': the Photo Group to assign
+ *     
+ */
+function taxonomy_photo_gallery_assign_node($file, $context) {
+  
+  $file_id = $file->fid;
+
+  foreach($context['photo_gallery'] as $photo_group_nid) {
+    if ($photo_group_nid) {
+      $node = node_load($photo_group_nid);
+      foreach ($node->field_photos['und'] as $i => $array) {
+        $fid = $array['fid'];
+        $fids[$fid] = $fid;
+        
+      }
+      if (!in_array($file_id, $fids)) {
+        $node->field_photos['und'][] = array('fid' => $file_id);
+        drupal_set_message(t('Set image %title to have a Photo Group of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
+        
+      }
+      else {
+        drupal_set_message(t('Image %title already had a Photo Group of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
+      }
+      node_save($node);
+    }
+  }
+  
+}
+/**
+ * Generates settings form for taxonomy_photo_gallery_assign_action.
  */
 function taxonomy_photo_gallery_assign_action_form($context) {
   $opts = _taxonomy_photo_galleries_list();
@@ -92,7 +158,22 @@ function taxonomy_photo_gallery_assign_action_form($context) {
     '#type' => 'select',
     '#multiple' => TRUE,
     '#options' => $opts,
-    '#description' => t('Assigns images to photo groups / galleries.'),
+    '#description' => t('Assigns images to photo groups.'),
+  );
+  // No more options, return the form.
+  return $form;
+}
+/**
+ * Generates settings form for taxonomy_photo_gallery_assign_node.
+ */
+function taxonomy_photo_gallery_assign_node_form($context) {
+  $opts = _taxonomy_photo_galleries_node_list();
+  $form['photo_gallery'] = array(
+    '#title' => t('Photo Gallery'),
+    '#type' => 'select',
+    '#multiple' => TRUE,
+    '#options' => $opts,
+    '#description' => t('Assigns images to photo galleries.'),
   );
   // No more options, return the form.
   return $form;
@@ -100,10 +181,16 @@ function taxonomy_photo_gallery_assign_action_form($context) {
 
 
 /**
- * Submit handler for wwe_admin_node_pillar_action.
+ * Submit handler for taxonomy_photo_gallery_assign_action.
  */
 function taxonomy_photo_gallery_assign_action_submit($form, $form_state) {
   return array('photo_group' => $form_state['values']['photo_group']);
+}
+/**
+ * Submit handler for taxonomy_photo_gallery_assign_node.
+ */
+function taxonomy_photo_gallery_assign_node_submit($form, $form_state) {
+  return array('photo_gallery' => $form_state['values']['photo_gallery']);
 }
 
 /**
