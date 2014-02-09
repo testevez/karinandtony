@@ -130,7 +130,7 @@ function taxonomy_photo_gallery_assign_node($file, $context) {
   foreach($context['photo_gallery'] as $photo_group_nid) {
     if ($photo_group_nid) {
       $node = node_load($photo_group_nid);
-      foreach ($node->field_photos['und'] as $i => $array) {
+      foreach ($node->LANGUAGE_NONE[LANGUAGE_NONE] as $i => $array) {
         $fid = $array['fid'];
         $fids[$fid] = $fid;
         
