@@ -14,21 +14,21 @@ function taxonomy_photo_gallery_action_info() {
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
+      */
     'taxonomy_photo_gallery_assign_action' => array(
       'type' => 'file',
-      'label' => t('Assign Photo Group'),
+      'label' => t('Assign Photo Category'),
       'configurable' => TRUE,
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
     'taxonomy_photo_gallery_unassign_action' => array(
       'type' => 'file',
-      'label' => t('Remove All Photo Groups'),
+      'label' => t('Remove All Photo Categories'),
       'configurable' => FALSE,
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
-*/
     'taxonomy_photo_gallery_assign_node' => array(
       'type' => 'file',
       'label' => t('Assign Photo Gallery'),
