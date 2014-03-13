@@ -1,5 +1,13 @@
+/*
+
 .view-id-my_favorites .views-field-rendered {
 	float: left;
 	margin-right: .5em;
 	margin-bottom: .5em;
+}
+*/
+
+.views-fluidgrid-item {
+    paddin: 5px;
+    margin: 3px;
 }
