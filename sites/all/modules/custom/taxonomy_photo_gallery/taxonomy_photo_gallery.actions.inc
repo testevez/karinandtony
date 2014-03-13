@@ -6,6 +6,7 @@
  */
 function taxonomy_photo_gallery_action_info() {
   return array(
+      /*
     'taxonomy_photo_gallery_file2node_action' => array(
       'type' => 'file',
       'label' => t('Make a node for this file'),
@@ -27,7 +28,7 @@ function taxonomy_photo_gallery_action_info() {
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
-
+*/
     'taxonomy_photo_gallery_assign_node' => array(
       'type' => 'file',
       'label' => t('Assign Photo Gallery'),
@@ -130,18 +131,18 @@ function taxonomy_photo_gallery_assign_node($file, $context) {
   foreach($context['photo_gallery'] as $photo_group_nid) {
     if ($photo_group_nid) {
       $node = node_load($photo_group_nid);
-      foreach ($node->LANGUAGE_NONE[LANGUAGE_NONE] as $i => $array) {
+      foreach ($node->field_flexslider_example_slidesh[LANGUAGE_NONE] as $i => $array) {
         $fid = $array['fid'];
         $fids[$fid] = $fid;
         
       }
       if (!in_array($file_id, $fids)) {
-        $node->field_photos['und'][] = array('fid' => $file_id);
-        drupal_set_message(t('Set image %title to have a Photo Group of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
+        $node->field_flexslider_example_slidesh[LANGUAGE_NONE][] = array('fid' => $file_id);
+        drupal_set_message(t('Set image %title to have a Gallery of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
         
       }
       else {
-        drupal_set_message(t('Image %title already had a Photo Group of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
+        drupal_set_message(t('Image %title already had a Gallery of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
       }
       node_save($node);
     }
