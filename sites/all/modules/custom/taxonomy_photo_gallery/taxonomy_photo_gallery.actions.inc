@@ -29,6 +29,14 @@ function taxonomy_photo_gallery_action_info() {
       //'behavior' => array('changes_property'),
       'triggers' => array('any'),
     ),
+    // end user
+    'taxonomy_photo_gallery_assign_node_eu' => array(
+      'type' => 'file',
+      'label' => t('Assign to my Photo Gallery(s)'),
+      'configurable' => TRUE,
+      'triggers' => array('any'),
+      ),
+    // admin
     'taxonomy_photo_gallery_assign_node' => array(
       'type' => 'file',
       'label' => t('Assign Photo Gallery'),
@@ -125,21 +133,17 @@ function taxonomy_photo_gallery_assign_action($file, $context) {
  *     
  */
 function taxonomy_photo_gallery_assign_node($file, $context) {
-  
   $file_id = $file->fid;
-
   foreach($context['photo_gallery'] as $photo_group_nid) {
     if ($photo_group_nid) {
       $node = node_load($photo_group_nid);
       foreach ($node->field_flexslider_example_slidesh[LANGUAGE_NONE] as $i => $array) {
         $fid = $array['fid'];
         $fids[$fid] = $fid;
-        
       }
       if (!in_array($file_id, $fids)) {
         $node->field_flexslider_example_slidesh[LANGUAGE_NONE][] = array('fid' => $file_id);
         drupal_set_message(t('Set image %title to have a Gallery of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
-        
       }
       else {
         drupal_set_message(t('Image %title already had a Gallery of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
@@ -147,8 +151,28 @@ function taxonomy_photo_gallery_assign_node($file, $context) {
       node_save($node);
     }
   }
-  
 }
+function taxonomy_photo_gallery_assign_node_eu($file, $context) {
+    $file_id = $file->fid;
+    foreach($context['photo_gallery'] as $photo_group_nid) {
+        if ($photo_group_nid) {
+            $node = node_load($photo_group_nid);
+            foreach ($node->field_flexslider_example_slidesh[LANGUAGE_NONE] as $i => $array) {
+                $fid = $array['fid'];
+                $fids[$fid] = $fid;
+            }
+            if (!in_array($file_id, $fids)) {
+                $node->field_flexslider_example_slidesh[LANGUAGE_NONE][] = array('fid' => $file_id);
+                drupal_set_message(t('Set image %title to have a Gallery of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
+            }
+            else {
+                drupal_set_message(t('Image %title already had a Gallery of %galleryname.', array('%title' => $file->title, '%galleryname' => $node->title)));
+            }
+            node_save($node);
+        }
+    }
+}
+
 /**
  * Generates settings form for taxonomy_photo_gallery_assign_action.
  */
@@ -179,7 +203,23 @@ function taxonomy_photo_gallery_assign_node_form($context) {
   // No more options, return the form.
   return $form;
 }
-
+function taxonomy_photo_gallery_assign_node_eu_form($context) {
+    $opts = _taxonomy_photo_galleries_node_list();
+    $form['photo_gallery'] = array(
+        '#title' => t('Add to an existing Photo Gallery'),
+        '#type' => 'select',
+        '#multiple' => TRUE,
+        '#options' => $opts,
+        '#description' => t('Assigns images to photo galleries.'),
+    );
+    $form['photo_gallery_new'] = array(
+        '#title' => t('Add to a new Photo Gallery'),
+        '#prefix' => 'Name of new Gallery:',
+        '#type' => 'textfield',
+    );
+    // No more options, return the form.
+    return $form;
+}
 
 /**
  * Submit handler for taxonomy_photo_gallery_assign_action.
@@ -192,6 +232,9 @@ function taxonomy_photo_gallery_assign_action_submit($form, $form_state) {
  */
 function taxonomy_photo_gallery_assign_node_submit($form, $form_state) {
   return array('photo_gallery' => $form_state['values']['photo_gallery']);
+}
+function taxonomy_photo_gallery_assign_node_eu_submit($form, $form_state) {
+    return array('photo_gallery' => $form_state['values']['photo_gallery']);
 }
 
 /**
