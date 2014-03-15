@@ -583,4 +583,7 @@ body {
 }
 .view-reception .views-row {
 	float: left;
+	padding: 5px;
+	margin-right: 5px;
+	background-color: #fff;
 }
