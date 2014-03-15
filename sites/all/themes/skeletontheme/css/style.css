@@ -596,7 +596,6 @@ body {
 
 }
 #block-views-my-galleries-block .views-row {
-	background: none repeat scroll 0 0 #FFFFFF;
     float: left;
     margin-right: 5px;
     min-height: 72px;
@@ -605,4 +604,10 @@ body {
 .view-my-galleries .views-field-field-flexslider-example-slidesh {
 	float: left;
 	margin-right: 5px;
+}
+.view-reception fieldset#edit-select {
+	background: none;
+}
+.view-reception fieldset#edit-select legend {
+	display: none;
 }
