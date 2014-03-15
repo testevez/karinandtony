@@ -596,8 +596,12 @@ body {
 	float: right;
     width: 300px;
 }
-#block-views-my-galleries-block .views-row-1 {
-	min-height: 72px;
+#block-views-my-galleries-block .views-row {
+	background: none repeat scroll 0 0 #FFFFFF;
+    float: left;
+    margin-right: 5px;
+    min-height: 72px;
+    width: 200px;
 }
 .view-my-galleries .views-field-field-flexslider-example-slidesh {
 	float: left;
