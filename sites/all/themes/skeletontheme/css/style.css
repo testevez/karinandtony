@@ -576,7 +576,7 @@ select.mnav { width:100%; padding:5px;}
 body {
 	background-color: #e1e2dc;
 }
-.view-reception .vbo-select-all-markup,
+.view-reception .vbo-select-all-markup .vbo-fieldset-select-all,
 #breadcrumb,
 #footer {
 	display:none;
