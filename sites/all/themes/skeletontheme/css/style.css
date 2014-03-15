@@ -619,3 +619,6 @@ body {
 .view-reception fieldset#edit-select legend {
 	display: none;
 }
+#block-system-user-menu h2 {
+	display: none;
+}
