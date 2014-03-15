@@ -102,9 +102,7 @@ function karintony_block_view($delta = '') {
     case 'my_galleries':
       $block['subject'] = FALSE; // t('Syndicate');
       $block['content'] = array(
-        '#theme' => 'my_galleries',
-        '#url' => 'rss.xml',
-        '#title' => t('Syndicate'),
+        '#markup' => _my_galleries_content(),
       );
       break;
   }

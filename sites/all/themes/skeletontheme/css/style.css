@@ -610,6 +610,7 @@ body {
 	border: none;
 	padding: 0;
 	margin: 0;
+	maring-bottom: 20px;
 }
 .view-reception fieldset#edit-select .fieldset-wrapper {
 	margin: 0;
