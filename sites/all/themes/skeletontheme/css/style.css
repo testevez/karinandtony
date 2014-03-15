@@ -581,3 +581,6 @@ body {
 #footer {
 	display:none;
 }
+.view-reception .views-row {
+	float: left;
+}
