@@ -611,6 +611,7 @@ body {
 }
 .view-reception fieldset#edit-select .fieldset-wrapper {
 	margin: 0;
+	padding: 0;
 }
 .view-reception fieldset#edit-select legend {
 	display: none;
