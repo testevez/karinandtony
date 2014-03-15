@@ -601,11 +601,11 @@ body {
     min-height: 72px;
     width: 300px;
 }
-#block-views-my-galleries-block .views-row .views-field-views-bulk-operations .views-label,
-#block-views-my-galleries-block .views-row .views-field-views-bulk-operations .field-content {
+.view-id-reception .views-row .views-field-views-bulk-operations .views-label,
+.view-id-reception .views-row .views-field-views-bulk-operations .field-content {
 	float: right;
 }
-#block-views-my-galleries-block .views-row .views-field-views-bulk-operations .views-label {
+.view-id-reception .views-row .views-field-views-bulk-operations .views-label {
 	margin-right: 5px;
 	
 }
