@@ -153,9 +153,27 @@ function taxonomy_photo_gallery_assign_node($file, $context) {
   }
 }
 function taxonomy_photo_gallery_assign_node_eu($file, $context) {
+	/*
 	if ($context['photo_gallery_new']) {
-		
+		global $user;
+		$node = new stdClass();
+		$node->type = ' flexslider_example';
+		$node->status = 1;
+		$node->uid = $user->uid;
+		$node->title = $context['photo_gallery_new'];
+		$node->promote = 1;
+		$node->created = date();
+		$node->timestamp = date();
+		$node->changed = date();
+		$node->sticky = 0;
+		$node->format = 3;
+		$node->language = 'en';
+		$node->teaser = '';
+		$node->body = '';
+		$node->revision = 0;
+		node_save($node);
 	}
+	*/
     $file_id = $file->fid;
     foreach($context['photo_gallery'] as $photo_group_nid) {
         if ($photo_group_nid) {
