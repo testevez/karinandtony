@@ -14,7 +14,6 @@ dependencies[] = file_entity
 dependencies[] = flag
 dependencies[] = flag_files
 dependencies[] = image
-dependencies[] = rpx_core
 dependencies[] = taxonomy
 dependencies[] = taxonomy_photo_gallery
 dependencies[] = views
