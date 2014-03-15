@@ -153,6 +153,9 @@ function taxonomy_photo_gallery_assign_node($file, $context) {
   }
 }
 function taxonomy_photo_gallery_assign_node_eu($file, $context) {
+	if ($context['photo_gallery_new']) {
+		
+	}
     $file_id = $file->fid;
     foreach($context['photo_gallery'] as $photo_group_nid) {
         if ($photo_group_nid) {
@@ -216,6 +219,7 @@ function taxonomy_photo_gallery_assign_node_eu_form($context) {
         '#title' => t('Add to a new Photo Gallery'),
         '#prefix' => 'Name of new Gallery:',
         '#type' => 'textfield',
+    	'#description' => t('Dont put anything in this field if you want to put the photos into an existing gallery.'),
     );
     // No more options, return the form.
     return $form;
@@ -234,7 +238,10 @@ function taxonomy_photo_gallery_assign_node_submit($form, $form_state) {
   return array('photo_gallery' => $form_state['values']['photo_gallery']);
 }
 function taxonomy_photo_gallery_assign_node_eu_submit($form, $form_state) {
-    return array('photo_gallery' => $form_state['values']['photo_gallery']);
+    return array(
+    		'photo_gallery' => $form_state['values']['photo_gallery'],
+    		'photo_gallery_new' => $form_state['values']['photo_gallery_new']
+    );
 }
 
 /**
