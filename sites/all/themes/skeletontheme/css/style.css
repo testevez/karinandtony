@@ -596,6 +596,9 @@ body {
 	float: right;
     width: 300px;
 }
+#block-views-my-galleries-block .views-row-1 {
+	min-height: 72px;
+}
 .view-my-galleries .views-field-field-flexslider-example-slidesh {
 	float: left;
 	margin-right: 5px;
