@@ -622,3 +622,6 @@ body {
 #block-system-user-menu h2 {
 	display: none;
 }
+#block-fboauth-login {
+	float: right;
+}
