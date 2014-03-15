@@ -102,7 +102,7 @@ function karintony_block_view($delta = '') {
     case 'my_galleries':
       $block['subject'] = FALSE; // t('Syndicate');
       $block['content'] = array(
-        '#theme' => 'feed_icon',
+        '#theme' => 'my_galleries',
         '#url' => 'rss.xml',
         '#title' => t('Syndicate'),
       );
@@ -113,9 +113,9 @@ function karintony_block_view($delta = '') {
 /**
  * Implements hook_theme().
  */
-function hook_theme($existing, $type, $theme, $path) {
+function karintony_theme($existing, $type, $theme, $path) {
   return array(
-    'forum_display' => array(
+    'my_galleries' => array(
       'variables' => array(
         'forums' => NULL,
         'topics' => NULL,
@@ -125,3 +125,6 @@ function hook_theme($existing, $type, $theme, $path) {
         'forum_per_page' => NULL,
       ),
     ),
+  );
+}
+  
