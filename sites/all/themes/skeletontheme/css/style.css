@@ -594,4 +594,9 @@ body {
 }
 #block-views-my-galleries-block {
 	float: right;
+    width: 300px;
+}
+.view-my-galleries .views-field-field-flexslider-example-slidesh {
+	float: left;
+	margin-right: 5px;
 }
