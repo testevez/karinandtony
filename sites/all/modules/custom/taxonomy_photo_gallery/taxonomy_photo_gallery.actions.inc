@@ -233,12 +233,14 @@ function taxonomy_photo_gallery_assign_node_eu_form($context) {
         '#options' => $opts,
         '#description' => t('Assigns images to photo galleries.'),
     );
+    /*
     $form['photo_gallery_new'] = array(
         '#title' => t('Add to a new Photo Gallery'),
         '#prefix' => 'Name of new Gallery:',
         '#type' => 'textfield',
     	'#description' => t('Dont put anything in this field if you want to put the photos into an existing gallery.'),
     );
+    */
     // No more options, return the form.
     return $form;
 }
