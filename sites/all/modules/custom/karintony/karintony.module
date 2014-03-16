@@ -6,7 +6,10 @@
 
 include_once 'karintony.features.inc';
 include_once 'karintony.theme.inc';
-
+// Load node.admin.inc from the node module.
+module_load_include('inc', 'node', 'node.admin');
+// Load content_types.inc from the node module.
+module_load_include('inc', 'node', 'content_types');
 
 /**
  * Implements hook_menu().
@@ -34,6 +37,21 @@ function karintony_menu() {
     'file path' => drupal_get_path('module', 'system'),
     'menu_name' => 'management'
   );
+  node_type_cache_reset();
+  
+    $type = 'flexslider_example';
+    $type_url_str = str_replace('_', '-', $type);
+    $items['create-gallery'] = array(
+      'title' => 'Create gallery',
+      'title callback' => 'check_plain',
+      'page callback' => 'node_add',
+      'page arguments' => array($type),
+      'access callback' => 'node_access',
+      'access arguments' => array('create', $type),
+      'file path' => drupal_get_path('module', 'node'),
+      'file' => 'node.pages.inc',
+    );
+    
   return $items;
 }
 
