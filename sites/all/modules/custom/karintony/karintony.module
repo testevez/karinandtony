@@ -6,10 +6,9 @@
 
 include_once 'karintony.features.inc';
 include_once 'karintony.theme.inc';
-// Load node.admin.inc from the node module.
 module_load_include('inc', 'node', 'node.admin');
-// Load content_types.inc from the node module.
 module_load_include('inc', 'node', 'content_types');
+module_load_include('inc', 'node', 'node.pages');
 
 /**
  * Implements hook_menu().
@@ -42,18 +41,18 @@ function karintony_menu() {
     $type = 'flexslider_example';
     $type_url_str = str_replace('_', '-', $type);
     $items['create-gallery'] = array(
+      'type' => MENU_CALLBACK,
       'title' => 'Create gallery',
       'title callback' => 'check_plain',
-      'page callback' => 'node_add',
+      'page callback' => '_gallery_node_add',
       'page arguments' => array($type),
       'access callback' => 'node_access',
       'access arguments' => array('create', $type),
-      'file path' => drupal_get_path('module', 'node'),
-      'file' => 'node.pages.inc',
     );
     
   return $items;
 }
+
 
 
 /**
@@ -77,7 +76,20 @@ function karintony_entity_info_alter(&$entity_info) {
     'custom settings' => TRUE,
   );
 }
+/**
+ *
+ */
+function _gallery_node_add($type) {
+  global $user;
 
+  $types = node_type_get_types();
+  $node = (object) array('uid' => $user->uid, 'name' => (isset($user->name) ? $user->name : ''), 'type' => $type, 'language' => LANGUAGE_NONE);
+  drupal_set_title(t('Create @name', array('@name' => $types[$type]->name)), PASS_THROUGH);
+  $output = drupal_get_form($type . '_node_form', $node);
+  
+  print drupal_render($output);
+  exit;
+}
 
 /**
  * Implements hook_init().
