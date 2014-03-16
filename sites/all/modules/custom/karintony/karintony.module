@@ -89,7 +89,7 @@ function _gallery_node_add($type) {
   $output = drupal_get_form($type . '_node_form', $node, 'karintony', $destination);
   $output['field_flexslider_example_slidesh']['#access'] = FALSE;
 
-  return drupal_render($output);
+  print drupal_render($output);
   exit;
 }
 /**
