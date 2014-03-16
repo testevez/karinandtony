@@ -88,8 +88,7 @@ function _gallery_node_add($type) {
   $destination = drupal_get_destination();
   $output = drupal_get_form($type . '_node_form', $node, 'karintony', $destination);
   $output['field_flexslider_example_slidesh']['#access'] = FALSE;
-  
-  dsm($output);
+
   return drupal_render($output);
   exit;
 }
@@ -97,8 +96,7 @@ function _gallery_node_add($type) {
  * Implements hook_form_alter().
  */
 function karintony_form_alter(&$form, &$form_state, $form_id) {
-dsm($form);
-  	dsm($form_state);
+
   if ($form_id == 'flexslider_example_node_form' && $form_state['build_info']['args'][1] == 'karintony') {
   	
   	$form['#submit'][] = 'karintony_gallery_add_submit';
@@ -108,8 +106,7 @@ dsm($form);
 
 function karintony_gallery_add_submit($form, &$form_state) {
   $form_state['redirect'] = $form_state['build_info']['args'][2];
-  dsm($form);
-  	dsm($form_state);
+
 }
 /**
  * Implements hook_init().
