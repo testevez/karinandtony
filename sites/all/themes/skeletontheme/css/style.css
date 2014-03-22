@@ -518,6 +518,10 @@ background: #f0f0f0 url('../images/light/arrow_bullet.png') no-repeat 90% 50%; }
 #navigation li.menuparent:hover > a, #menu li.menuparent:active > a {    
 background: #f0f0f0 url('../images/dark/arrow_bullet.png') no-repeat 90% 50%; }  
 	
+#wrap {
+	background: url(../images/custom/stripe.gif) top left repeat-x;
+}
+	
 /* 
 * Superfish support: Reset background/border
 */
@@ -537,12 +541,15 @@ background: #f0f0f0 url('../images/dark/arrow_bullet.png') no-repeat 90% 50%; }
 #navigation ul.sf-menu li:hover ul,
 #navigation ul.sf-menu li.sfHover ul,
 #navigation ul li:hover ul { top: 35px; }
+	
+	
 
 }
 
 /* Mobile/Browser */
 @media only screen and (max-width: 767px) {
 select.mnav { width:100%; padding:5px;}
+#wrap { background: none; }
 }
 
 #header-right ul.menu, #header-top ul.menu { padding:0; margin:0; display:block; overflow:hidden; text-align:right; padding:20px 0 0 0; }
@@ -566,6 +573,7 @@ select.mnav { width:100%; padding:5px;}
 /* Mobile/Browser */
 @media only screen and (max-width: 767px) {
 #header-right ul.menu li, #header-top ul.menu li { display:block; text-align:left; border-bottom:1px solid #e3e3e3; border-right:none; padding:10px 0; }
+#wrap { background: none; }
 }
 
 
@@ -633,4 +641,47 @@ body {
 #block-fboauth-login {
 	float: right;
 	margin-top: 10px;
+}
+#navigation ul, #navigation ul.sf-menu {
+	left: -5px;
+    position: relative;
+}
+#navigation ul li a:hover, #navigation ul.sf-menu li a:hover { position: relative; color: #545454; background-color: #19a84a; border-radius: 5px; }
+
+#navigation ul, #navigation ul.sf-menu {
+    background-image: none;
+    border-color:  none;
+    border-radius:  none;
+    border-style:  none;
+    border-width:  none;
+    box-shadow: none;
+}
+#navigation ul li, #navigation ul.sf-menu li {
+	border: none;
+	margin-right: 10px;
+}
+#navigation ul li a.active, 
+#navigation ul.sf-menu li a.active {
+    background-color: #19a84a;
+	border-radius: 5px;
+    color: #fff;
+   	text-shadow: none; /* 1px 1px 0 #ccc; */
+	font-family: 'PT Sans';
+	font-weight: normal;
+}
+ #navigation ul li a, 
+ #navigation ul.sf-menu li a {
+    color: #000 important;
+	text-shadow: none; 
+	font-family: 'PT Sans';
+	font-weight: normal;
+}
+#navigation ul li a, #navigation ul.sf-menu li a {
+	padding: 5px 10px;
+}
+
+body #header #site-name a {
+    font-weight: normal;
+	color: #04a614;
+	text-shadow: none;
 }
