@@ -14,3 +14,6 @@
 .views-fluidgrid-item-inner {
     margin: 3px;
 }
+#header-top {
+    position: absolute;
+}
